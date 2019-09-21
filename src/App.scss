@@ -1,22 +1,9 @@
-.App {
-  text-align: center;
-}
+@import "bulma/sass/utilities/_all.sass";
+@import "bulma/sass/base/_all.sass";
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #09d3ac;
-}
+@import "bulma/sass/grid/_all.sass";
+@import "bulma/sass/layout/section.sass";
+@import "bulma/sass/elements/image.sass";
+@import "bulma/sass/elements/box.sass";
+@import "bulma/sass/elements/title.sass";
+@import "bulma/sass/form/_all.sass";

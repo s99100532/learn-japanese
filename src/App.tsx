@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.scss';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import CharacterImage from './components/CharacterImage';
+
+const characters = [
+  "a", "hi", "ki", "mi", "ni", "o", "ru", "su", "tsu", "yu",
+  "e", "ho", "ko", "mo", "no", "ra", "sa", "ta", "u",
+  "fu", "i", "ku", "mu", "_n", "re", "se", "te", "_wa",
+  "ha", "ka", "ma", "na", "nu", "ri", "si", "ti", "ya",
+  "he", "ke", "me", "ne", "_o", "ro", "so", "to", "yo",
+];
+
 
 const App: React.FC = () => {
+
+  const [filter, setFilter] = useState("");
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="section">
+        <div className="container">
+          <div className="field">
+            <div className="control">
+              <input className="input" onChange={e => setFilter(e.currentTarget.value)} value={filter}></input>
+            </div>
+          </div>
+          <div className="box">
+            <div className="columns is-mobile is-multiline">
+              {
+                characters.filter(char => char.indexOf(filter) === 0).map(char => <div key={char} className="column is-3 is-4-mobile">
+                  <CharacterImage  char={char} />
+                  </div>)
+              }
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
