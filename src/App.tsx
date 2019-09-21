@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.scss';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import CharacterImage from './components/CharacterImage';
 
 const characters = [
