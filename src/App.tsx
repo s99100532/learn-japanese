@@ -28,7 +28,7 @@ const App: React.FC = () => {
           <div className="box">
             <div className="columns is-mobile is-multiline">
               {
-                characters.filter(char => char.indexOf(filter) === 0).map(char => <div key={char} className="column is-3 is-4-mobile">
+                characters.filter(char => char.indexOf(filter.trim().toLowerCase()) === 0).map(char => <div key={char} className="column is-3 is-4-mobile">
                   <CharacterImage  char={char} />
                   </div>)
               }
