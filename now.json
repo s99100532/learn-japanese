@@ -1,7 +1,7 @@
 {
     "build": {
         "env": {
-        "REACT_APP_IMG_ENDPOINT": "http://ec2-13-229-228-52.ap-southeast-1.compute.amazonaws.com:8888/characterImg"
+        "REACT_APP_IMG_ENDPOINT": "https://s99100532.ml/characterImg"
         }
     }
 }
