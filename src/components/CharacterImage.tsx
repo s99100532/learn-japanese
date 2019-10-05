@@ -4,6 +4,7 @@ type Props = {
     char: string
 };
 
+
 const CharacterImage = ({ char }: Props) => {
 
     const [image, setImage] = useState("");
