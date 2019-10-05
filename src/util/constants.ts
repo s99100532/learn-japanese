@@ -11,3 +11,9 @@ export const Characters = [
     "wa", "_o",
     "n",
 ];
+
+export const Tabs = {
+    Search: "search",
+    Test: "test",
+    Gallery: "gallery",
+}
