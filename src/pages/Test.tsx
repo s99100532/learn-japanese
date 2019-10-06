@@ -38,6 +38,7 @@ const Test = () => {
         const char = history[cursor - 2] || Characters[0];
         setChar(char);
         setCursor(cursor - 1);
+        canvas.current.clear();
     }, [history, cursor]);
 
     const save = useCallback(() => {
@@ -56,6 +57,10 @@ const Test = () => {
 
     }, [canvas, char]);
 
+    const undo = useCallback(() => {
+        canvas.current.undo();
+    }, [canvas]);
+
 
     const next = useCallback(() => {
         if (cursor >= history.length) {
@@ -69,6 +74,7 @@ const Test = () => {
             setChar(history[cursor])
         }
         setCursor(cursor + 1);
+        canvas.current.clear();
 
     }, [history, cursor]);
 
@@ -92,6 +98,11 @@ const Test = () => {
                         <div className="button is-rounded" onClick={save}>
                             <span className="icon is-small">
                                 <i className="fas fa-save"></i>
+                            </span>
+                        </div>
+                        <div className="button is-rounded" onClick={undo}>
+                            <span className="icon is-small">
+                                <i className="fas fa-undo"></i>
                             </span>
                         </div>
                         <div className="button is-rounded" onClick={() => setVisiable(!visible)}>
