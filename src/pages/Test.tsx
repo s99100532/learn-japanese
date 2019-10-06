@@ -3,7 +3,8 @@ import CharacterAudio from "../components/CharacterAudio";
 import { shuffle } from "lodash";
 import { Characters } from "../util/constants";
 import CanvasDraw from "react-canvas-draw";
-import axios from "axios";
+import classNames from "classnames";
+import Axios from "axios";
 
 const canvasProps = {
     loadTimeOffset: 5,
@@ -29,6 +30,7 @@ const Test = () => {
     const [history, setHistory] = useState<string[]>([charactersShuffled[cursor]]);
     const [char, setChar] = useState(charactersShuffled[cursor]);
     const [visible, setVisiable] = useState(false);
+    const [loading, setLoading] = useState(false);
     const canvas = useRef<any>();
 
     const previous = useCallback(() => {
@@ -42,18 +44,31 @@ const Test = () => {
     }, [history, cursor]);
 
     const save = useCallback(() => {
-        const image = canvas.current.getSaveData();
-        axios.post(`${process.env.REACT_APP_IMG_ENDPOINT}/${char}`, {
-            image: JSON.parse(image)
-        })
-            .then(function (response) {
-                if(response.data.status === "ok") {
-                    alert("success");
-                }
+        const imageJSON = canvas.current.getSaveData();
+        try {
+            const image = JSON.parse(imageJSON);
+            if (!image.lines.length) {
+                alert("Cannot save empty chart")
+                return;
+            }
+            setLoading(true);
+            Axios.post(`${process.env.REACT_APP_IMG_ENDPOINT}/${char}`, {
+                image
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    if (response.data.status === "ok") {
+                        alert("success");
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false)
+                });
+        } catch (e) {
+            alert(e);
+        }
 
     }, [canvas, char]);
 
@@ -86,26 +101,26 @@ const Test = () => {
             </div>
             <div className="columns is-mobile">
                 <div className="column is-narrow">
-                    <div className="button is-rounded" onClick={previous}>
+                    <button className="button is-rounded" onClick={previous}>
                         <span className="icon is-small">
                             <i className="fas fa-arrow-left"></i>
                         </span>
-                    </div>
+                    </button>
                 </div>
                 <div className="column">
                     <div className="buttons is-centered">
                         <CharacterAudio char={char} />
-                        <div className="button is-rounded" onClick={save}>
+                        <button className={classNames("button is-rounded", {"is-loading": loading})} disabled={loading} onClick={save}>
                             <span className="icon is-small">
                                 <i className="fas fa-save"></i>
                             </span>
-                        </div>
-                        <div className="button is-rounded" onClick={undo}>
+                        </button>
+                        <button className="button is-rounded" onClick={undo}>
                             <span className="icon is-small">
                                 <i className="fas fa-undo"></i>
                             </span>
-                        </div>
-                        <div className="button is-rounded" onClick={() => setVisiable(!visible)}>
+                        </button>
+                        <button className="button is-rounded" onClick={() => setVisiable(!visible)}>
                             <span className="icon is-small">
                                 {
                                     visible ?
@@ -113,16 +128,16 @@ const Test = () => {
                                         <i className="fas fa-eye"></i>
                                 }
                             </span>
-                        </div>
+                        </button>
 
                     </div>
                 </div>
                 <div className="column is-narrow">
-                    <div className="button is-rounded" onClick={next}>
+                    <button className="button is-rounded" onClick={next}>
                         <span className="icon is-small">
                             <i className="fas fa-arrow-right"></i>
                         </span>
-                    </div>
+                    </button>
                 </div>
             </div>
             <div className="has-text-centered" >

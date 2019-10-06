@@ -9,8 +9,13 @@ const CharacterAudio = ({ char }: Props) => {
 
     const [audio, setAudio] = useState<HTMLAudioElement>();
     useEffect(() => {
-        import(`../audio/${char.replace(/_/g, "")}.mp3`).then(audio => {
-            setAudio(new Audio(audio.default));
+        import(`../audio/${char.replace(/_/g, "")}.mp3`).then(audioFile => {
+            const audio = new Audio(audioFile.default);
+            setAudio(audio);
+            setTimeout(() => {
+                    audio.play();
+            }, 400);
+
         });
     }, [char]);
 
