@@ -11,6 +11,7 @@ const Gallery = () => {
     const [selectedOption, setSelectedOption] = useState();
     const [images, setImages] = useState([]);
     const [cursor, setCursor] = useState(0);
+    const [loading, setLoading] = useState(false);
     const canvas = useRef<any>();
 
     const handleChange = useCallback((value) => {
@@ -19,8 +20,10 @@ const Gallery = () => {
 
     useEffect(() => {
         if (typeof selectedOption !== "undefined") {
+            setLoading(true);
             Axios.get(`${process.env.REACT_APP_IMG_ENDPOINT}/${selectedOption.value}`)
                 .then(response => {
+                    setLoading(true);
                     const images = response.data.data
                     if (images) {
                         setImages(images);
@@ -29,6 +32,9 @@ const Gallery = () => {
                             setCursor(1);
                         }
                     }
+                })
+                .finally(() => {
+                    setLoading(false);
                 })
         }
     }, [selectedOption])
@@ -44,6 +50,7 @@ const Gallery = () => {
             <Select
                 value={selectedOption}
                 onChange={handleChange}
+                isLoading={loading}
                 options={options}
                 styles={{
                     container: (provided) => ({

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from "react";
 import CharacterAudio from "../components/CharacterAudio";
-import { sample } from "lodash";
+import { shuffle } from "lodash";
 import { Characters } from "../util/constants";
 import CanvasDraw from "react-canvas-draw";
 import axios from "axios";
@@ -21,13 +21,13 @@ const canvasProps = {
     immediateLoading: false
 };
 
-const initChar = sample(Characters) || "";
+const charactersShuffled = shuffle(Characters) || "";
 
 const Test = () => {
 
-    const [history, setHistory] = useState<string[]>([initChar]);
     const [cursor, setCursor] = useState(1);
-    const [char, setChar] = useState(initChar);
+    const [history, setHistory] = useState<string[]>([charactersShuffled[cursor]]);
+    const [char, setChar] = useState(charactersShuffled[cursor]);
     const [visible, setVisiable] = useState(false);
     const canvas = useRef<any>();
 
@@ -64,7 +64,7 @@ const Test = () => {
 
     const next = useCallback(() => {
         if (cursor >= history.length) {
-            const newChar = sample(Characters) || "";
+            const newChar = charactersShuffled[cursor + 1] || "";
             setChar(newChar);
             setHistory([
                 ...history,
